@@ -14,6 +14,7 @@ public class AllyCommands : MonoBehaviour
     public float safeRadio = 1.0f;
     public float AwarenessRadio = 2.5f;
     public Transform player;
+    public Transform enemy;
     public Transform target;
     float mCS, mWS, ms, roSG;
     public bool detected = false;
@@ -119,6 +120,11 @@ public class AllyCommands : MonoBehaviour
 
         //Escape Conditional
         {
+            if(detected == true)
+            {
+                ismoving = true;
+                transform.position = Vector3.MoveTowards(transform.position, enemy.position , -1 * step);
+            }
         }
     }
 
@@ -128,6 +134,15 @@ public class AllyCommands : MonoBehaviour
         {
             detected = true;
             Debug.Log("true");
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "enemy")
+        {
+            Debug.Log("false");
+            detected = false;
         }
     }
 
