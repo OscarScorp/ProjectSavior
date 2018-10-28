@@ -897,6 +897,7 @@ GameObject:
   - component: {fileID: 1238240977}
   - component: {fileID: 1238240976}
   - component: {fileID: 1238240975}
+  - component: {fileID: 1238240978}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: enemy
@@ -974,8 +975,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04e780ae5853896419386efb3f56be94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  walkSpeed: 1
+  runSpeed: 2
   maxHealth: 100
+  currHealth: 100
+  MoveType: 0
 --- !u!114 &1238240976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,6 +1016,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.41765755, y: 0.6256366}
   m_EdgeRadius: 0
+--- !u!114 &1238240978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1238240972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61709188a3c112409c0e02d5d58954f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseRadius: 2
+  target: {fileID: 539307163}
 --- !u!1 &1338051943
 GameObject:
   m_ObjectHideFlags: 0

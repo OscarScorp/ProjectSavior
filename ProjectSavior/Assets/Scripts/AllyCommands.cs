@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AllyCommands : MonoBehaviour
 {
-
     bool ducked = false;
     bool following = false;
     bool canTakeAllyDamage = true;
@@ -19,7 +18,6 @@ public class AllyCommands : MonoBehaviour
     float mCS, mWS, ms, roSG;
     public bool detected = false;
 
-
     void Start()
     {
         //GameObject Ally = GameObject.Find("Ally1"); //Find script from another object. 
@@ -32,7 +30,7 @@ public class AllyCommands : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float step = speed * Time.deltaTime;
+        float step = speed * Time.deltaTime; //¿Cada cuadro se declara una función step? ¿No toma muchos recursos en vez de declararlo sólo una vez?
         //input Controls
         {
             //F: follow player
