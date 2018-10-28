@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour {
     public float walkingSpeed; //3
     public float runningSpeed; //4.5
 
+    public bool isMoving;
+    public bool isRunning;
+    public bool isCrouching;
+
     public float speed; //Public para testing.
     float crouchSpeed; //Siempre será la mitad de Walking speed.
 
@@ -43,52 +47,69 @@ public class PlayerMovement : MonoBehaviour {
         //deltaTime == haciendo transición del objeto al destino (1 adelante) pero poco a poco, de lo contrario, es de golpe.
         transform.position = new Vector2(transform.position.x + horizontalAxis * (speed * Time.deltaTime), transform.position.y + verticalAxis * (speed * Time.deltaTime));
 
-        if (Input.GetKey("left shift"))
+        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        { animator.SetBool("isMoving", true); }
+        else
+        { animator.SetBool("isMoving", false); }
+
+        if (isCrouching == false)
         {
-            //windUpSprint = windUpSprint + (Time.deltaTime)/ windUpMultip;
+            if (Input.GetKey("left shift"))
+                    {
+                        isRunning = true;
+                        //windUpSprint = windUpSprint + (Time.deltaTime)/ windUpMultip;
             
             
-            speed = speed + WindupManager(windUpMultip);
-            if (speed > runningSpeed)
-            {
-                speed = runningSpeed;
-                //windUpSprint = 0;
-            }
+                        speed = speed + WindupManager(windUpMultip);
+                        if (speed > runningSpeed)
+                        {
+                            speed = runningSpeed;
+                        animator.SetBool("isRunning", true); // animación de correr entra
+                    //windUpSprint = 0;
+                        }
 
 
 
+                    }
+
+                    if (Input.GetKeyUp("left shift"))
+                    {
+                        isRunning = false;
+                        //windUpSprint = 0;
+                        speed = walkingSpeed;
+                        animator.SetBool("isRunning", false); // animación de correr sale, el personaje vuelve a caminar o idle.
+
+
+                    }
         }
+        
 
-        if (Input.GetKeyUp("left shift"))
+
+
+
+        if (isRunning == false)
         {
-            //windUpSprint = 0;
-            speed = walkingSpeed;
-
-
-        }
-
-
-
-
-
         if (Input.GetKeyDown("left ctrl"))
-        {
+                {
+                isCrouching = true;
+                    speed = crouchSpeed;
 
-            speed = crouchSpeed;
+
+                }
+
+                if (Input.GetKeyUp("left ctrl"))
+                {
+                isCrouching = false;
+                    speed = walkingSpeed;
 
 
+                }
         }
-
-        if (Input.GetKeyUp("left ctrl"))
-        {
-
-            speed = walkingSpeed;
-
-
-        }
+        
 
         //Animations:
         animator.SetFloat("moveSpeed", speed); //Sprite animation changes depending on speed's value: 0: Idle. >0 && <4: Walk. >4: Running.
+        
     }
 
   float WindupManager( float windupModifier)
