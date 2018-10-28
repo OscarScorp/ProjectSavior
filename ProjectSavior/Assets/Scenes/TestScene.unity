@@ -1110,6 +1110,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 3
   runningSpeed: 5
+  isMoving: 0
+  isRunning: 0
+  isCrouching: 0
   speed: 3
   windUpMultip: 0
   child_spr_Body: {fileID: 887976845}

@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
 
-    /* Editado por Oscar. 10/3/2018.
-    Formatting: variables deberán iniciar con minúscula, mientras que métodos y funciones deberán iniciar con mayúscula.
-    Algunas variables movidas a Privadas ya que no son requeridas en públicas.
-    crouchSpeed siempre será la mitad de walkingSpeed.
-    Comentado windUpSprint ya que no se está utilizando.
-    Agregado comentarios con valores que parecen ser los que encajan mejor para el estilo de juego, al menos por ahora.
-    En Start, se debe inicializar la velocidad de speed ya que inicia con 0. El jugador no puede moverse caminando. Debe iniciar corriendo para que la velocidad de Speed tenga más de 0.
-    */
-    //Editado por Oscar. 10/4/2018: Incio de animaciones. Falta por terminar.
-
     public float walkingSpeed; //3
     public float runningSpeed; //4.5
 
@@ -26,6 +16,8 @@ public class PlayerMovement : MonoBehaviour {
 
     //public float windUpSprint; //No se está utilizando.
     public float windUpMultip; //0.1f // valor por el que time.deltatime se divide para que no sea de golpe. mientras más sea el valor, más tiempo tardará el windup
+
+    bool facingRight = true;
 
     Animator animator; //Animator
     public GameObject child_spr_Body;
@@ -47,7 +39,18 @@ public class PlayerMovement : MonoBehaviour {
         //deltaTime == haciendo transición del objeto al destino (1 adelante) pero poco a poco, de lo contrario, es de golpe.
         transform.position = new Vector2(transform.position.x + horizontalAxis * (speed * Time.deltaTime), transform.position.y + verticalAxis * (speed * Time.deltaTime));
 
-        if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
+        if (Input.GetKeyDown(KeyCode.D)) //right
+        {
+            if(!facingRight)
+                Flip();
+        } else if (Input.GetKeyDown(KeyCode.A)) //left
+        {
+            if (facingRight)
+                Flip();
+        }
+
+
+            if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         { animator.SetBool("isMoving", true); }
         else
         { animator.SetBool("isMoving", false); }
@@ -89,21 +92,20 @@ public class PlayerMovement : MonoBehaviour {
 
         if (isRunning == false)
         {
-        if (Input.GetKeyDown("left ctrl"))
-                {
+            if (Input.GetKeyDown("left ctrl"))
+            {
                 isCrouching = true;
-                    speed = crouchSpeed;
+                speed = crouchSpeed;
+                animator.SetBool("isCrouching", isCrouching);
+            }
 
-
-                }
-
-                if (Input.GetKeyUp("left ctrl"))
-                {
+            if (Input.GetKeyUp("left ctrl"))
+            {
                 isCrouching = false;
-                    speed = walkingSpeed;
+                speed = walkingSpeed;
+                animator.SetBool("isCrouching", isCrouching);
+            }
 
-
-                }
         }
         
 
@@ -112,9 +114,17 @@ public class PlayerMovement : MonoBehaviour {
         
     }
 
-  float WindupManager( float windupModifier)
+    float WindupManager( float windupModifier)
     {
         float windupAm =+ (Time.deltaTime) / windupModifier;
         return windupAm;
+    }
+
+    void Flip() //Función para flipear el sprite del personaje al voltear.
+    {
+        facingRight = !facingRight;
+        Vector3 theScale = child_spr_Body.transform.localScale;
+        theScale.x *= -1;
+        child_spr_Body.transform.localScale = theScale;
     }
 }
