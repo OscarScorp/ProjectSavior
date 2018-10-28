@@ -7,11 +7,12 @@ public class EnemyProperties : MonoBehaviour {
     Rigidbody rb;
     public float speed;
     public int maxHealth;
-    public int currHealth;
+    int currHealth;
     
     void Start ()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        currHealth = maxHealth;
     }
 	
 	
